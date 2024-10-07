@@ -7,6 +7,7 @@ package presentation;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import dialog.DialogReservation;
+import java.time.LocalDate;
 
 @SuppressWarnings("serial")
 public class FrameReservation extends javax.swing.JFrame {
@@ -37,13 +38,30 @@ public class FrameReservation extends javax.swing.JFrame {
                 datePickerDateChanged(dateEvent);
             }
         });
+        hourPicker = new javax.swing.JComboBox<>();
+        datePickerTitle = new javax.swing.JLabel();
+        hourPickerTitle = new javax.swing.JLabel();
         nbPersonsPanel = new javax.swing.JPanel();
         pickTablePanel = new javax.swing.JPanel();
         tablesImage = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        dateTimePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        dateTimePanel.setBorder(javax.swing.BorderFactory.createLineBorder(null));
+
+        hourPicker.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "11h30", "12h00", "12h30", "13h00", "13h30" }));
+        hourPicker.setEnabled(false);
+        hourPicker.setMinimumSize(new java.awt.Dimension(139, 21));
+        hourPicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hourPickerActionPerformed(evt);
+            }
+        });
+
+        datePickerTitle.setText("1. Choisissez la date");
+
+        hourPickerTitle.setText("2. Choisissez l'heure");
+        hourPickerTitle.setEnabled(false);
 
         javax.swing.GroupLayout dateTimePanelLayout = new javax.swing.GroupLayout(dateTimePanel);
         dateTimePanel.setLayout(dateTimePanelLayout);
@@ -51,21 +69,33 @@ public class FrameReservation extends javax.swing.JFrame {
             dateTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dateTimePanelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(dateTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(datePickerTitle))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(dateTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(hourPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hourPickerTitle))
+                .addGap(77, 77, 77))
         );
         dateTimePanelLayout.setVerticalGroup(
             dateTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(dateTimePanelLayout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
+                .addGroup(dateTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(datePickerTitle)
+                    .addComponent(hourPickerTitle))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(dateTimePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hourPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(65, Short.MAX_VALUE))
         );
 
         datePicker.getAccessibleContext().setAccessibleName("");
         datePicker.getAccessibleContext().setAccessibleDescription("");
 
-        nbPersonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        nbPersonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout nbPersonsPanelLayout = new javax.swing.GroupLayout(nbPersonsPanel);
         nbPersonsPanel.setLayout(nbPersonsPanelLayout);
@@ -78,7 +108,7 @@ public class FrameReservation extends javax.swing.JFrame {
             .addGap(0, 108, Short.MAX_VALUE)
         );
 
-        pickTablePanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        pickTablePanel.setBorder(javax.swing.BorderFactory.createLineBorder(null));
 
         javax.swing.GroupLayout pickTablePanelLayout = new javax.swing.GroupLayout(pickTablePanel);
         pickTablePanel.setLayout(pickTablePanelLayout);
@@ -118,20 +148,35 @@ public class FrameReservation extends javax.swing.JFrame {
                 .addComponent(nbPersonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pickTablePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void hourPickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hourPickerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hourPickerActionPerformed
+
     public void datePickerDateChanged(DateChangeEvent dateEvent) {
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+        
+        dialog.handleDateSelectedEvent(LocalDate.MAX);
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
+    public void enableHourSelector(){
+        hourPickerTitle.setEnabled(true);
+        hourPicker.setEnabled(true);
+    }
+    
+   
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.github.lgooddatepicker.components.DatePicker datePicker;
+    private javax.swing.JLabel datePickerTitle;
     private javax.swing.JPanel dateTimePanel;
+    private javax.swing.JComboBox<String> hourPicker;
+    private javax.swing.JLabel hourPickerTitle;
     private javax.swing.JPanel nbPersonsPanel;
     private javax.swing.JPanel pickTablePanel;
     private javax.swing.JLabel tablesImage;

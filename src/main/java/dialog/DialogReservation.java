@@ -26,8 +26,10 @@ public class DialogReservation {
     }
 
     public void handleDateSelectedEvent(LocalDate date) {
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+        System.out.println("handleDateSelectedEvent");
+        inf.truc();
+        frameReservation.enableHourSelector();
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleTimeSelectedEvent(String time) {
