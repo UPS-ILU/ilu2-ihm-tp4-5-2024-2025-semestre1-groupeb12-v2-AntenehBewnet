@@ -8,7 +8,7 @@ public class InterfaceNoyauFonctionnel {
     
     public void truc(){
         
-        System.out.println("Truc");
+        System.out.println("truc");
     }
 
 }
