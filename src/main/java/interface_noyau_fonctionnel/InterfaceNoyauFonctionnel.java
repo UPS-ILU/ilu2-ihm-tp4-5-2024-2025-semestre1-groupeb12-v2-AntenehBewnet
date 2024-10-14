@@ -7,7 +7,7 @@ public class InterfaceNoyauFonctionnel {
     }
     
     public void truc(){
-        
+     
         System.out.println("truc");
     }
 

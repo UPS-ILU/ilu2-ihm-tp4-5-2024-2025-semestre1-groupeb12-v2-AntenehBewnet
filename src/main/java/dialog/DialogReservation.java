@@ -34,13 +34,17 @@ public class DialogReservation {
     }
 
     public void handleTimeSelectedEvent(String time) {
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+        System.out.println("handleTimeSelectedEvent");
+        inf.truc();
+        frameReservation.enableNbrPersonneSelector();
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleNumOfPersonsSelectedEvent(int nbPersons) {
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+        System.out.println("handleNumOfPersonsSelectedEvent");
+        inf.truc();
+        frameReservation.enableTableSelector();
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleTableSelectedEvent(int numTable) {
