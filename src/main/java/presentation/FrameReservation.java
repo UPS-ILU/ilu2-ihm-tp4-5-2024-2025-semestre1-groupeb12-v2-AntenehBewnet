@@ -6,6 +6,7 @@ package presentation;
 
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
+import com.sun.jdi.IntegerValue;
 import dialog.DialogReservation;
 import java.time.LocalDate;
 
@@ -50,9 +51,8 @@ public class FrameReservation extends javax.swing.JFrame {
         pickTablePanel = new javax.swing.JPanel();
         tablesImage = new javax.swing.JLabel();
         tablePickerTitle = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablePicker = new javax.swing.JList<>();
-        jLabel1 = new javax.swing.JLabel();
+        tableImage = new javax.swing.JLabel();
+        listTable = new java.awt.List();
         validerButton = new javax.swing.JButton();
         annulerButton = new javax.swing.JButton();
 
@@ -175,16 +175,14 @@ public class FrameReservation extends javax.swing.JFrame {
         tablePickerTitle.setText("4. Choisissez votre table");
         tablePickerTitle.setEnabled(false);
 
-        tablePicker.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Table 2", "Table 3", "Table 4", "Table 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
-        tablePicker.setEnabled(false);
-        jScrollPane1.setViewportView(tablePicker);
+        tableImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Plan_tables.jpg"))); // NOI18N
+        tableImage.setEnabled(false);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Plan_tables.jpg"))); // NOI18N
-        jLabel1.setText("jLabel1");
+        listTable.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                listTableItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout pickTablePanelLayout = new javax.swing.GroupLayout(pickTablePanel);
         pickTablePanel.setLayout(pickTablePanelLayout);
@@ -193,17 +191,15 @@ public class FrameReservation extends javax.swing.JFrame {
             .addGroup(pickTablePanelLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(pickTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pickTablePanelLayout.createSequentialGroup()
-                        .addComponent(tablePickerTitle)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tablePickerTitle)
                     .addGroup(pickTablePanelLayout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jLabel1)
+                        .addComponent(tableImage)
                         .addGap(120, 120, 120)
                         .addComponent(tablesImage, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(listTable, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         pickTablePanelLayout.setVerticalGroup(
             pickTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,20 +208,21 @@ public class FrameReservation extends javax.swing.JFrame {
                 .addComponent(tablePickerTitle)
                 .addGroup(pickTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pickTablePanelLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(tableImage)
+                        .addContainerGap(55, Short.MAX_VALUE))
+                    .addGroup(pickTablePanelLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pickTablePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tablesImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(pickTablePanelLayout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(listTable, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(pickTablePanelLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(jLabel1)
-                        .addContainerGap(55, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
 
         validerButton.setText("Valider");
+        validerButton.setEnabled(false);
         validerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 validerButtonActionPerformed(evt);
@@ -283,10 +280,7 @@ public class FrameReservation extends javax.swing.JFrame {
         //throw new UnsupportedOperationException("Not implemented yet");
     }
     
-    public void enableHourSelector(){
-        hourPickerTitle.setEnabled(true);
-        hourPicker.setEnabled(true);
-    }
+    
     
     
     private void hourPickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hourPickerActionPerformed
@@ -294,13 +288,10 @@ public class FrameReservation extends javax.swing.JFrame {
        // System.out.println(hourPicker.getSelectedItem());
     }//GEN-LAST:event_hourPickerActionPerformed
 
-    public void enableNbrPersonneSelector(){
-        nbrPersonnePickerTitle.setEnabled(true);
-        nbrPersonnePicker.setEnabled(true);
-    }
+    
     
     private void annulerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_annulerButtonActionPerformed
-        // TODO add your handling code here:
+        dialog.handleCancelEvent();
     }//GEN-LAST:event_annulerButtonActionPerformed
 
     private void validerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_validerButtonActionPerformed
@@ -319,17 +310,58 @@ public class FrameReservation extends javax.swing.JFrame {
 
     private void nbrPersonnePickerItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_nbrPersonnePickerItemStateChanged
         dialog.handleNumOfPersonsSelectedEvent(Integer.parseInt(evt.getItem().toString()));
-        System.out.println(evt.getItem().toString());
+        System.out.println(evt.getItem().toString()+"lesssgooooo");
     }//GEN-LAST:event_nbrPersonnePickerItemStateChanged
 
     private void popupMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupMenu1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_popupMenu1ActionPerformed
 
-    public void enableTableSelector(){
-        tablePickerTitle.setEnabled(true);
-        tablePicker.setEnabled(true);
+    private void listTableItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_listTableItemStateChanged
+        dialog.handleTableSelectedEvent(Integer.parseInt(evt.getItem().toString())+1);
+        System.out.println(evt.getItem());
+    }//GEN-LAST:event_listTableItemStateChanged
+    
+    public void enableHourSelector(){
+        hourPickerTitle.setEnabled(true);
+        hourPicker.setEnabled(true);
     }
+    
+    public void enableNbrPersonneSelector(){
+        nbrPersonnePickerTitle.setEnabled(true);
+        nbrPersonnePicker.setEnabled(true);
+    }
+    
+    public void addEltToTable(String elt){
+        listTable.add(elt);
+    }
+    
+    public void removeAllElt(){
+        listTable.removeAll();
+    }
+    
+    
+    public void enableTableSelector(){
+        tableImage.setEnabled(true);
+        tablePickerTitle.setEnabled(true);
+        listTable.setEnabled(true);
+    }
+    
+    
+     public void enableValiderButton(){
+        validerButton.setEnabled(true);  
+    }
+     
+     public void disableAll(){
+         hourPicker.setEnabled(false);
+         hourPickerTitle.setEnabled(false);
+         nbrPersonnePicker.setEnabled(false);
+         nbrPersonnePickerTitle.setEnabled(false);
+         tableImage.setEnabled(false);
+         tablePickerTitle.setEnabled(false);
+         
+         listTable.removeAll();
+     }
 
     
     
@@ -344,16 +376,15 @@ public class FrameReservation extends javax.swing.JFrame {
     private javax.swing.JPanel dateTimePanel;
     private javax.swing.JComboBox<String> hourPicker;
     private javax.swing.JLabel hourPickerTitle;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private java.awt.List listTable;
     private javax.swing.JPanel nbPersonsPanel;
     private javax.swing.JComboBox<String> nbrPersonnePicker;
     private javax.swing.JLabel nbrPersonnePickerTitle;
     private javax.swing.JPanel pickTablePanel;
     private java.awt.PopupMenu popupMenu1;
-    private javax.swing.JList<String> tablePicker;
+    private javax.swing.JLabel tableImage;
     private javax.swing.JLabel tablePickerTitle;
     private javax.swing.JLabel tablesImage;
     private javax.swing.JButton validerButton;
