@@ -15,9 +15,9 @@ public class InterfaceNoyauFonctionnel {
         
     }
     
-    public void truc(String time){
-     
-        System.out.println("le time estttttttttttt " + time);
+    
+    public String confirmationMessage(int jour, String mois,int annee, int nombrePersonnes, String time,int numTable){
+        return "Réservation validée pour le" + String.valueOf(jour) + " "+ mois + " "+ String.valueOf(annee) + " à " + time + " pour 4 personnes à la  Table " + String.valueOf(numTable);
     }
 
 }

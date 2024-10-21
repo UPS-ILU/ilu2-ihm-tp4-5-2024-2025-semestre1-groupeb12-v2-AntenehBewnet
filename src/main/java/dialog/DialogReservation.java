@@ -7,6 +7,7 @@ package dialog;
 import interface_noyau_fonctionnel.InterfaceNoyauFonctionnel;
 import java.awt.EventQueue;
 import java.time.LocalDate;
+import javax.swing.JOptionPane;
 import presentation.FrameReservation;
 
 public class DialogReservation {
@@ -14,16 +15,16 @@ public class DialogReservation {
     private FrameReservation frameReservation;
     private InterfaceNoyauFonctionnel inf;
     private int jour;
-    private int mois;
+    private int moisInt;
+    private String moisString;
+    private int annee;
     private int nombrePersonnes;
     private String time;
+    private int numTable;
 
     public DialogReservation(InterfaceNoyauFonctionnel inf) {
         this.inf = inf;
-        this.jour = jour;
-        this.mois = mois;
-        this.nombrePersonnes = nombrePersonnes;
-        this.time = time;
+        
     }
 
     public void initDialog() {
@@ -35,51 +36,40 @@ public class DialogReservation {
 
    
     public void handleDateSelectedEvent(LocalDate date) {
-        System.out.println("handleDateSelectedEvent");
-        System.out.println("yoooooooooooooo" + date);
         this.jour = date.getDayOfMonth();
-        System.out.println(jour +"gebaaaaaaa");
-       // inf.truc();
+        this.moisString = date.getMonth().toString();
+        this.annee = date.getYear();
         frameReservation.enableHourSelector();
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    public void handleTimeSelectedEvent(String time) {
-        System.out.println("handleTimeSelectedEvent");
-        
+    public void handleTimeSelectedEvent(String time) {        
         this.time = time;
-        inf.truc(this.time);
         frameReservation.enableNbrPersonneSelector();
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleNumOfPersonsSelectedEvent(int nbPersons) {
-        System.out.println("handleNumOfPersonsSelectedEvent");
-       // inf.truc();
         this.nombrePersonnes = nbPersons;
         frameReservation.enableTableSelector();
-        String[] table = inf.trouverTableDisponible(jour, mois, nombrePersonnes, time);
+        String[] table = inf.trouverTableDisponible(jour, moisInt, nombrePersonnes, time);
         frameReservation.removeAllElt();
         for (int i = 0; i < table.length; i++) {
             frameReservation.addEltToTable(table[i]);
         }
-        
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleTableSelectedEvent(int numTable) {
+        this.numTable = numTable;
         frameReservation.enableValiderButton();
-       // throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleCancelEvent() {
         frameReservation.disableAll();
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     public void handleValidationEvent() {
-        //TODO
-        throw new UnsupportedOperationException("Not implemented yet");
+        JOptionPane.showMessageDialog(frameReservation, inf.confirmationMessage(jour, moisString,annee, nombrePersonnes, time,numTable),"Confirmation de réservation",1);
+        frameReservation.removeAllElt();
+        frameReservation.disableAll();
     }
 
     public static void main(String[] args) {
